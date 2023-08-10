@@ -15,6 +15,18 @@ const typeDefs = gql`
         IN
         UK
         US
+        ARG
+    }
+
+    input CreateUserInput {
+        name: String!,
+        age: Int = 12,
+        username: String!,
+        native: Nationality = IN
+    }
+
+    type Mutation {
+        createUser(input: CreateUserInput!) : User!
     }
 
     type Query {
