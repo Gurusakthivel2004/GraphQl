@@ -3,11 +3,12 @@ const _ = require("lodash");
 const resolvers = {
     Query: {
         users() {
-            return UserList
+            if(UserList) return {users : UserList}
+            return {message : 'An error occured :('}
         },
         user (parent, args) {
-            const id = args.id;
-            const user = _.find(UserList,{id: Number(id)});
+            const name = args.name;
+            const user = _.find(UserList,{name: name});
             return user;
         }
     },
@@ -24,7 +25,13 @@ const resolvers = {
             UserList.push(user);
             return user;
         }
+    },
+    UserResultUnion: {
+        __resolveType (obj) {
+            if(obj.users) return "UserSuccessResult"
+            if(obj.message) return "UserErrorResult"
+            return null
+        }
     }
-    
 }
 module.exports = {resolvers}

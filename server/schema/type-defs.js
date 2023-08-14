@@ -21,7 +21,7 @@ const typeDefs = gql`
     input CreateUserInput {
         name: String!,
         age: Int = 12,
-        username: String!,
+        username: String = "user@123",
         native: Nationality = IN
     }
 
@@ -30,9 +30,19 @@ const typeDefs = gql`
     }
 
     type Query {
-        users: [User!]!
-        user (id: ID!) : User!
+        users: UserResultUnion
+        user (name: String!) : User!
     }
+
+    type UserSuccessResult {
+        users: [User!]!
+    }
+
+    type UserErrorResult {
+        message: String!
+    }
+
+    union UserResultUnion = UserSuccessResult | UserErrorResult
     
 `
 module.exports = {typeDefs}
